@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { firebaseConfig, auth } from './firebaseConfig';
 import MainView from './screens/MainView';
-import LoginView from './screens/LoginView';
+import LoginView from './screens/LoginView'; //Added
 import { AuthContext } from './AuthContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MenuProvider } from 'react-native-popup-menu';
