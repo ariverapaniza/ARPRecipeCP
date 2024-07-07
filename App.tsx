@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { firebaseConfig, auth } from './firebaseConfig';
-import MainView from './screens/MainView';
+import MainView from './screens/MainView';  //Added
 import LoginView from './screens/LoginView'; //Added
 import { AuthContext } from './AuthContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
