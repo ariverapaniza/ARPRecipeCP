@@ -1,22 +1,35 @@
-//screens/MainView.tsx
+// screens/MainView.tsx
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import PostsView from './PostsView';
+import ProfileView from './ProfileView';
 
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+const Tab = createBottomTabNavigator();
 
 const MainView = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up MainView.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen 
+        name="Recipes" 
+        component={PostsView}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="restaurant" color={color} size={size} />
+          ),
+        }} 
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={ProfileView}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          ),
+        }} 
+      />
+    </Tab.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default MainView;
