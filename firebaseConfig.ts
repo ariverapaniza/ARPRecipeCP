@@ -8,7 +8,7 @@ import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
-  apiKey: "API_KEY",
+  apiKey: "AIzaSyDpT3QIsnsl2eydpqGnxEnk2QpRGN5nr6M",
   authDomain: "arprecipe-expo.firebaseapp.com",
   projectId: "arprecipe-expo",
   storageBucket: "arprecipe-expo.appspot.com",
