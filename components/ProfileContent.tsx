@@ -1,23 +1,28 @@
+// components/ProfileContent.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { User } from '../types';
 
-const ProfileContent = () => {
+const ProfileContent = ({ user }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Profile Page</Text>
+      <Text style={styles.title}>{user.username}</Text>
+      <Text style={styles.text}>{user.fullName}</Text>
+      <Text style={styles.text}>{user.aboutYou}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
   },
-  text: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  text: {
+    fontSize: 18,
   },
 });
 

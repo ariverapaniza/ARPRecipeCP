@@ -1,6 +1,6 @@
 // screens/LoginView.tsx
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, Alert, StyleSheet, Image } from 'react-native';
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { AuthContext } from '../AuthContext';
 
@@ -32,6 +32,7 @@ const LoginView = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Image source={require('../assets/icon.png')} style={styles.logo} />
       <Text style={styles.title}>Welcome to ARP Recipe List</Text>
       <Text style={styles.subtitle}>Please Sign In</Text>
       <TextInput
@@ -69,6 +70,11 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  logo: {
+    width: 350,
+    height: 350,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,

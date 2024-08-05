@@ -8,10 +8,11 @@ import { firebaseConfig, auth } from './firebaseConfig';
 import MainView from './screens/MainView';
 import LoginView from './screens/LoginView';
 import CreateNewPost from './screens/CreateNewPost';
-import PostDetail from './screens/PostDetailView';
-import EditPost from './screens/EditPostView';
 import RegisterView from './screens/RegisterView';
+import PostDetailView from './screens/PostDetailView';
+import EditPostView from './screens/EditPostView';
 import { AuthContext } from './AuthContext';
+import { AppRegistry } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MenuProvider } from 'react-native-popup-menu';
 
@@ -22,11 +23,7 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setLogStatus(true);
-      } else {
-        setLogStatus(false);
-      }
+      setLogStatus(!!user);
     });
     return () => unsubscribe();
   }, []);
@@ -39,10 +36,10 @@ const App = () => {
             <Stack.Navigator>
               {logStatus ? (
                 <>
-                  <Stack.Screen name="Main" component={MainView} />
+                  <Stack.Screen name="ARP-Recipe" component={MainView} />
                   <Stack.Screen name="CreateNewPost" component={CreateNewPost} />
-                  <Stack.Screen name="PostDetail" component={PostDetail} />
-                  <Stack.Screen name="EditPost" component={EditPost} />
+                  <Stack.Screen name="PostDetail" component={PostDetailView} />
+                  <Stack.Screen name="EditPost" component={EditPostView} />
                 </>
               ) : (
                 <>
@@ -58,5 +55,7 @@ const App = () => {
     </AuthContext.Provider>
   );
 };
+
+AppRegistry.registerComponent('main', () => App);
 
 export default App;

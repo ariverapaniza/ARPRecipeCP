@@ -1,13 +1,16 @@
 // components/PostCard.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { format } from 'date-fns';
-import { getFirestore, doc, deleteDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, arrayUnion, arrayRemove, getDoc, onSnapshot } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 const PostCard = ({ post }) => {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [userProfilePicURL, setUserProfilePicURL] = useState(post.userProfilePicURL);
   const auth = getAuth();
   const firestore = getFirestore();
@@ -15,6 +18,12 @@ const PostCard = ({ post }) => {
 
   const formattedDate = format(post.publishedDate.toDate(), 'PPpp');
   const currentUser = auth.currentUser;
+
+  useEffect(() => {
+    if (currentUser && post.favorites && post.favorites.includes(currentUser.uid)) {
+      setIsFavorite(true);
+    }
+  }, [currentUser, post.favorites]);
 
   useEffect(() => {
     const fetchUserProfilePic = async () => {
@@ -26,6 +35,44 @@ const PostCard = ({ post }) => {
 
     fetchUserProfilePic();
   }, [post.userUID]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(firestore, 'Recipes', post.id), (doc) => {
+      const updatedPost = doc.data();
+      if (updatedPost && updatedPost.favorites) {
+        setIsFavorite(updatedPost.favorites.includes(currentUser.uid));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [post.id]);
+
+  const handleToggleFavorite = async () => {
+    try {
+      const postRef = doc(firestore, 'Recipes', post.id);
+      const userRef = doc(firestore, 'Users', currentUser.uid);
+
+      if (isFavorite) {
+        await updateDoc(postRef, {
+          favorites: arrayRemove(currentUser.uid),
+        });
+        await updateDoc(userRef, {
+          favorites: arrayRemove(post.id),
+        });
+        setIsFavorite(false);
+      } else {
+        await updateDoc(postRef, {
+          favorites: arrayUnion(currentUser.uid),
+        });
+        await updateDoc(userRef, {
+          favorites: arrayUnion(post.id),
+        });
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error('Error updating favorites: ', error);
+    }
+  };
 
   const handleDeletePost = async () => {
     try {
@@ -66,7 +113,7 @@ const PostCard = ({ post }) => {
           {currentUser?.uid === post.userUID && (
             <Menu>
               <MenuTrigger>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setMenuVisible(true)}>
                   <Text style={styles.menuTrigger}>⋮</Text>
                 </TouchableOpacity>
               </MenuTrigger>
@@ -78,6 +125,11 @@ const PostCard = ({ post }) => {
         </View>
         <Text style={styles.text}>{post.text}</Text>
         {post.imageURL && <Image source={{ uri: post.imageURL }} style={styles.image} />}
+        <View style={styles.footer}>
+          <TouchableOpacity onPress={handleToggleFavorite}>
+            <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={24} color={isFavorite ? 'red' : 'black'} />
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -124,6 +176,10 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 200,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });
 

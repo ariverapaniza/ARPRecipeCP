@@ -1,6 +1,6 @@
 // screens/RegisterView.tsx
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, Button, Text, Alert, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';

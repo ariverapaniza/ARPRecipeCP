@@ -48,7 +48,7 @@ const CreateNewPost = ({ navigation }) => {
       text: postText,
       userName: user.displayName || user.email,
       userUID: user.uid,
-      userProfilePicURL,
+      userProfilePicURL, // Add profile picture URL to the post
       publishedDate: Timestamp.fromDate(new Date()),
     };
 
